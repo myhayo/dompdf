@@ -108,7 +108,9 @@ class Text extends AbstractFrameReflower
         // split the text into words
         // The regex splits on everything that's a separator (^\S double negative), excluding nbsp (\xa0), plus dashes
         // This currently excludes the "narrow nbsp" character
-        $words = preg_split('/([^\S\xA0]+|-+)/u', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+        // 修复中文字符串不换行的BUG, FROM: https://blog.csdn.net/kelinfeng16/article/details/84135308
+        preg_match_all("/./u", $text, $array);
+        $words = array(0);
         $wc = count($words);
 
         // Determine the split point
